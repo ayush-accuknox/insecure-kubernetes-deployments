@@ -1,0 +1,23 @@
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+    - snyk-fix-aeaf091740625b6f39841a4c0e74f3d3
+    paths:
+    - .github/workflows/SAST.yml
+name: sonarqube
+jobs:
+  SonarQube-Paid:
+    name: SonarQube-Paid
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+    - uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_PAID }}
+        SONAR_HOST_URL: http://139.59.43.202:9000
+      with:
+        args: >
+          -Dsonar.projectKey=insecure-kubernetes-deployments
